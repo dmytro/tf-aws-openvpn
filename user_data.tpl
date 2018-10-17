@@ -17,6 +17,7 @@ reroute_dns=${reroute_dns}
 private_key_pem=${private_key_pem}
 certificate_pem=${certificate_pem}
 issuer_pem=${issuer_pem}
+use_google_auth=${use_google_auth}
 
 
 --===============BOUNDARY==
@@ -89,8 +90,13 @@ echo "--> CONFIGURE HTTPS CERTIFICATE"
 /usr/local/openvpn_as/scripts/sacli --key "cs.cert"      --value "${certificate_pem}" ConfigPut
 /usr/local/openvpn_as/scripts/sacli --key "cs.ca_bundle" --value "${issuer_pem}"      ConfigPut
 
-echo "--> RESTART OPENVPN ACCESS SERVER TO SAVE AND APPLY CHANGES"
+if [ ${use_google_auth} == 1 ]; then
+  echo "--> USE GOOGLE AUTHENTICATOR"
+  # USE GOOGLE AUTHENTICATOR
+  /usr/local/openvpn_as/scripts/sacli --key "vpn.server.google_auth.enable" --value "true" ConfigPut
+fi
 
+echo "--> RESTART OPENVPN ACCESS SERVER TO SAVE AND APPLY CHANGES"
 # RESTART OPENVPN ACCESS SERVER TO SAVE AND APPLY CONFIGURATION CHANGES
 /usr/local/openvpn_as/scripts/sacli start
 

@@ -193,3 +193,12 @@ variable aws_region {
   description = "AWS_DEFAULT_REGION variable is required for configuring ACME certificate validaion"
   type = "string"
 }
+
+###############################################################################
+### GOOGLE AUTHENTICATOR CONFIGURATION
+###############################################################################
+variable use_google_auth {
+  default = "0"
+  type = "string"
+  description = "Use Google Authenticator for 2FA"
+}

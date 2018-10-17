@@ -58,6 +58,6 @@ data "template_file" "user_data" {
     private_key_pem = "${acme_certificate.certificate.private_key_pem}"
     certificate_pem = "${acme_certificate.certificate.certificate_pem}"
     issuer_pem      = "${acme_certificate.certificate.issuer_pem}"
-
+    use_google_auth = "${var.use_google_auth}"
   }
 }
