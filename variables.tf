@@ -202,3 +202,12 @@ variable use_google_auth {
   type = "string"
   description = "Use Google Authenticator for 2FA"
 }
+
+###############################################################################
+### USE PREALLOCATED FIXED ELASTIC IP
+###############################################################################
+variable public_ip {
+  default = ""
+  type = "string"
+  description = "To use preallocated static IP address, please set variable to existing EIP. If it's empty, it will be created dynamically."
+}
