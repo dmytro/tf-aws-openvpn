@@ -177,6 +177,33 @@ variable openvpn_ldap_use_ssl {
 }
 
 ###############################################################################
+### HTTPS CERTIFICATE CONFIGURATION
+###############################################################################
+variable acme_registration_email {
+  description = "e-mail used to send notification prior to SSL/TLS cerfificate expiration"
+  type = "string"
+}
+
+variable aws_profile {
+  description = "AWS_PROFILE variable is required for configuring ACME certificate validaion"
+  type = "string"
+}
+
+variable aws_region {
+  description = "AWS_DEFAULT_REGION variable is required for configuring ACME certificate validaion"
+  type = "string"
+}
+
+###############################################################################
+### GOOGLE AUTHENTICATOR CONFIGURATION
+###############################################################################
+variable use_google_auth {
+  default = "0"
+  type = "string"
+  description = "Use Google Authenticator for 2FA"
+}
+
+###############################################################################
 ### USE PREALLOCATED FIXED ELASTIC IP
 ###############################################################################
 variable public_ip {

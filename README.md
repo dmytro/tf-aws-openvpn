@@ -116,6 +116,9 @@ Access Server script ./sacli
         openvpn_ldap_use_ssl            = "always"
         custom_security_groups          = ["<security group ID", "security group ID"]
         public_ip                       = "<ip_address>" or ""
+        acme_registration_email         = "admin@example.com"
+        aws_profile                     = "<profile_name>"
+        aws_region                      = "us-east-1"
     }
 
 ### providers.tf

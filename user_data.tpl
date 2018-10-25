@@ -14,6 +14,10 @@ admin_pw=${admin_pswd}
 license=${license_key}
 reroute_gw=${reroute_gw}
 reroute_dns=${reroute_dns}
+private_key_pem=${private_key_pem}
+certificate_pem=${certificate_pem}
+issuer_pem=${issuer_pem}
+use_google_auth=${use_google_auth}
 
 
 --===============BOUNDARY==
@@ -86,8 +90,19 @@ echo "APPLY FIX FOR WEB UI SLOWNESS"
 /usr/local/openvpn_as/scripts/sacli --key vpn.server.server_sockbuf_udp --value 0 ConfigPut
 
 
-echo "--> RESTART OPENVPN ACCESS SERVER TO SAVE AND APPLY CHANGES"
+echo "--> CONFIGURE HTTPS CERTIFICATE"
+# CONFIGURE HTTPS CERTIFICATE
+/usr/local/openvpn_as/scripts/sacli --key "cs.priv_key"  --value "${private_key_pem}" ConfigPut
+/usr/local/openvpn_as/scripts/sacli --key "cs.cert"      --value "${certificate_pem}" ConfigPut
+/usr/local/openvpn_as/scripts/sacli --key "cs.ca_bundle" --value "${issuer_pem}"      ConfigPut
 
+if [ ${use_google_auth} == 1 ]; then
+  echo "--> USE GOOGLE AUTHENTICATOR"
+  # USE GOOGLE AUTHENTICATOR
+  /usr/local/openvpn_as/scripts/sacli --key "vpn.server.google_auth.enable" --value "true" ConfigPut
+fi
+
+echo "--> RESTART OPENVPN ACCESS SERVER TO SAVE AND APPLY CHANGES"
 # RESTART OPENVPN ACCESS SERVER TO SAVE AND APPLY CONFIGURATION CHANGES
 /usr/local/openvpn_as/scripts/sacli start
 
