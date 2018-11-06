@@ -42,9 +42,8 @@ data "template_file" "user_data" {
     ldap_uname_attr = "${var.openvpn_ldap_uname_attr}"
     ldap_add_req    = "${var.openvpn_ldap_add_req}"
     ldap_use_ssl    = "${var.openvpn_ldap_use_ssl}"
-    private_key_pem = "${acme_certificate.certificate.private_key_pem}"
-    certificate_pem = "${acme_certificate.certificate.certificate_pem}"
-    issuer_pem      = "${acme_certificate.certificate.issuer_pem}"
     use_google_auth = "${var.use_google_auth}"
+    use_ssm         = "${var.use_ssm_for_certificate}"
+    aws_region      = "${var.aws_region}"
   }
 }

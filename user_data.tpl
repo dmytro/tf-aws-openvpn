@@ -14,11 +14,6 @@ admin_pw=${admin_pswd}
 license=${license_key}
 reroute_gw=${reroute_gw}
 reroute_dns=${reroute_dns}
-private_key_pem=${private_key_pem}
-certificate_pem=${certificate_pem}
-issuer_pem=${issuer_pem}
-use_google_auth=${use_google_auth}
-
 
 --===============BOUNDARY==
 MIME-Version: 1.0
@@ -28,8 +23,7 @@ Content-Type: text/x-shellscript; charset="us-ascii"
 
 echo "INSTALL PACKAGE DEPENDENCIES"
 apt update -y
-apt install -y unzip
-apt install -y libwww-perl libdatetime-perl
+apt install -y unzip libwww-perl libdatetime-perl jq
 
 # INSTALL CLOUDWATCH MONITORING SCRIPTS
 echo "INSTALL CLOUDWATCH MONITORING SCRIPTS"
@@ -89,12 +83,17 @@ echo "APPLY FIX FOR WEB UI SLOWNESS"
 /usr/local/openvpn_as/scripts/sacli --key vpn.server.server_sockbuf_tcp --value 0 ConfigPut
 /usr/local/openvpn_as/scripts/sacli --key vpn.server.server_sockbuf_udp --value 0 ConfigPut
 
+if [ ${use_ssm} == 1 ]; then
+  echo "CONFIGURE HTTPS CERTIFICATE"
 
-echo "--> CONFIGURE HTTPS CERTIFICATE"
-# CONFIGURE HTTPS CERTIFICATE
-/usr/local/openvpn_as/scripts/sacli --key "cs.priv_key"  --value "${private_key_pem}" ConfigPut
-/usr/local/openvpn_as/scripts/sacli --key "cs.cert"      --value "${certificate_pem}" ConfigPut
-/usr/local/openvpn_as/scripts/sacli --key "cs.ca_bundle" --value "${issuer_pem}"      ConfigPut
+  aws --region ${aws_region} ssm get-parameters-by-path --with-decryption --path /openvpn/${public_hostname} | jq -r '.Parameters[] | "export " + (.Name | split("/")[3] | ascii_upcase | gsub("-"; "_")) + "=\"" + .Value + "\";"' > /tmp/certificates
+
+  source /tmp/certificates && rm -f /tmp/certificates
+
+  /usr/local/openvpn_as/scripts/sacli --key "cs.priv_key"  --value "$${PRIVATE_KEY_PEM}" ConfigPut
+  /usr/local/openvpn_as/scripts/sacli --key "cs.cert"      --value "$${CERTIFICATE_PEM}" ConfigPut
+  /usr/local/openvpn_as/scripts/sacli --key "cs.ca_bundle" --value "$${ISSUER_PEM}"      ConfigPut
+fi
 
 if [ ${use_google_auth} == 1 ]; then
   echo "--> USE GOOGLE AUTHENTICATOR"

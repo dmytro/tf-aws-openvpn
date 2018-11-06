@@ -12,6 +12,7 @@ data "aws_iam_policy_document" "openvpn" {
         "cloudwatch:Describe*",
         "cloudwatch:List*",
         "cloudwatch:PutMetricData",
+        "ssm:GetParametersByPath"
       ]
 
       resources = ["*"]
