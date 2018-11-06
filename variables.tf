@@ -177,15 +177,6 @@ variable openvpn_ldap_use_ssl {
 }
 
 ###############################################################################
-### GOOGLE AUTHENTICATOR CONFIGURATION
-###############################################################################
-variable use_google_auth {
-  default = "0"
-  type = "string"
-  description = "Use Google Authenticator for 2FA"
-}
-
-###############################################################################
 ### INSTALL HTTPS CERTIFICATE FROM SSM PARAMETER STORE
 ###############################################################################
 variable use_ssm_for_certificate {
@@ -215,4 +206,3 @@ variable use_google_auth {
   type = "string"
   description = "Use Google Authenticator for 2FA"
 }
-
