@@ -14,6 +14,7 @@ admin_pw=${admin_pswd}
 license=${license_key}
 reroute_gw=${reroute_gw}
 reroute_dns=${reroute_dns}
+use_google_auth=${use_google_auth}
 
 --===============BOUNDARY==
 MIME-Version: 1.0
