@@ -43,6 +43,7 @@ data "template_file" "user_data" {
     ldap_add_req    = "${var.openvpn_ldap_add_req}"
     ldap_use_ssl    = "${var.openvpn_ldap_use_ssl}"
     use_google_auth = "${var.use_google_auth}"
-    use_ssm_for_certificate = "${var.use_ssm_for_certificate}"
+    use_ssm         = "${var.use_ssm_for_certificate}"
+    aws_region      = "${var.aws_region}"
   }
 }

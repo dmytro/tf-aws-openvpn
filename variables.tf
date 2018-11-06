@@ -193,6 +193,11 @@ variable use_ssm_for_certificate {
   type = "string"
   description = "If set to 1, will install certificates stored in SSM Paramater Store"
 }
+
+variable aws_region {
+  type = "string"
+}
+
 ###############################################################################
 ### USE PREALLOCATED FIXED ELASTIC IP
 ###############################################################################

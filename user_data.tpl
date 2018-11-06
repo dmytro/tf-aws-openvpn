@@ -83,10 +83,13 @@ echo "APPLY FIX FOR WEB UI SLOWNESS"
 /usr/local/openvpn_as/scripts/sacli --key vpn.server.server_sockbuf_tcp --value 0 ConfigPut
 /usr/local/openvpn_as/scripts/sacli --key vpn.server.server_sockbuf_udp --value 0 ConfigPut
 
-if [ ${use_ssm_for_certificate} == 1 ]; then
+if [ ${use_ssm} == 1 ]; then
   echo "CONFIGURE HTTPS CERTIFICATE"
-  $(aws --profile paidy-test ssm get-parameters-by-path --with-decryption --path /openvpn/${public_hostname} | \
-       jq -r '.Parameters[] | "export " + (.Name | split("/")[3] | ascii_upcase | gsub("-"; "_")) + "=" + .Value + ";"' )
+
+  aws --region ${aws_region} ssm get-parameters-by-path --with-decryption --path /openvpn/${public_hostname} | jq -r '.Parameters[] | "export " + (.Name | split("/")[3] | ascii_upcase | gsub("-"; "_")) + "=\"" + .Value + "\";"' > /tmp/certificates
+
+  source /tmp/certificates && rm -f /tmp/certificates
+
   /usr/local/openvpn_as/scripts/sacli --key "cs.priv_key"  --value "$${PRIVATE_KEY_PEM}" ConfigPut
   /usr/local/openvpn_as/scripts/sacli --key "cs.cert"      --value "$${CERTIFICATE_PEM}" ConfigPut
   /usr/local/openvpn_as/scripts/sacli --key "cs.ca_bundle" --value "$${ISSUER_PEM}"      ConfigPut
