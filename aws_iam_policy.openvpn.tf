@@ -5,13 +5,15 @@ data "aws_iam_policy_document" "openvpn" {
       effect = "Allow"
 
       actions = [
-        "ec2:DescribeTags",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents",
-        "cloudwatch:Get*",
         "cloudwatch:Describe*",
+        "cloudwatch:Get*",
         "cloudwatch:List*",
         "cloudwatch:PutMetricData",
+        "ec2:DescribeTags",
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:DescribeLogStreams",
+        "logs:PutLogEvents",
         "ssm:GetParametersByPath"
       ]
 
