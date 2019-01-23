@@ -24,7 +24,7 @@ Content-Type: text/x-shellscript; charset="us-ascii"
 
 echo "INSTALL PACKAGE DEPENDENCIES"
 apt update -y
-apt install -y unzip libwww-perl libdatetime-perl jq
+apt install -y unzip libwww-perl libdatetime-perl jq python python-pip libpython-dev
 
 # INSTALL CLOUDWATCH MONITORING SCRIPTS
 echo "INSTALL CLOUDWATCH MONITORING SCRIPTS"
